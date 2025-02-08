@@ -3046,7 +3046,7 @@ ul li:last-child .card-list-4 {
 .banner-hero .block-banner {
   position: relative;
   z-index: 12;
-  padding: 50px 40px;
+  padding: 40px;
 }
 
 .banner-hero .block-banner .form-find {
@@ -3166,8 +3166,8 @@ ul li:last-child .card-list-4 {
 
 .banner-hero .heading-banner {
   color: #05264E;
-  font-size: 48px;
-  line-height: 60px;
+  font-size: 45px;
+  line-height: 55px;
   color: #05264E;
 }
 
@@ -5900,16 +5900,209 @@ ul li:last-child .card-list-4 {
   left: 0px;
 }
 
-.banner-videobox {
+.laptop {
+  width: 100%;
+}
+
+.laptop .screen {
+  position: relative;
+  width: 80%;
+  margin: 0 auto;
+  background: #1a1a1a;
+  border: 1px solid rgba(0, 0, 0, 0.01);
+  box-shadow: 0 0 0 3px rgba(64, 64, 64, 1),
+    inset 0 0 100px 0 rgba(0, 0, 0, 0.75);
+  border-radius: 12px 12px 0 0;
+  overflow: hidden;
+  margin-bottom: 3px;
+}
+
+.laptop .screen::before {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 320px;
+}
+
+@media (max-width: 1400px) {
+  .laptop .screen::before {
+    height: 270px;
+  }
+}
+
+@media (max-width: 1300px) {
+  .laptop .screen::before {
+    height: 220px;
+  }
+}
+
+.laptop .screen::after {
+  content: 'MacBook Pro';
+  position: absolute;
+  left: 50%;
+  bottom: -6px;
+  transform: translateX(-50%);
+  font-size: 6px;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+  background: linear-gradient(180deg,
+      rgba(255, 255, 255, 1), rgba(255, 255, 255, 0.6));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.laptop .screen .lcd {
+  position: absolute;
+  top: 3.8%;
+  left: 2.2%;
+  right: 2.2%;
+  bottom: 3.5%;
+  border: 1px solid;
+  border-color: #000 #202020 #282828 #000;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.screen .lcd video {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 16/9;
+}
+
+.laptop .screen .glass_frame {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg,
+      rgba(255, 255, 255, 0.175) 0%,
+      rgba(255, 255, 255, 0) 50%);
+}
+
+.laptop .screen .screen_reflection {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(100deg, rgba(0, 0, 0, 0) 0%,
+      rgba(255, 255, 255, 0.05) 33%, rgba(0, 0, 0, 0) 33.1%);
+}
+
+.laptop .keyboard {
+  position: relative;
+  width: 100%;
+}
+
+.laptop .keyboard.top {
+  height: 3px;
+  border-radius: 1px 1px 0 0;
+  background: linear-gradient(90deg,
+      rgba(255, 255, 255, 0.5) 0%, rgba(0, 0, 0, 0.75) 2%,
+      rgba(0, 0, 0, 0.33) 7%, rgba(0, 0, 0, 0) 100%),
+
+    linear-gradient(90deg, rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, 0.33) 93%, rgba(0, 0, 0, 0.75) 98%,
+      rgba(255, 255, 255, 0.5) 100%),
+
+    linear-gradient(90deg, rgba(255, 255, 255, 0) 20%,
+      rgba(255, 255, 255, 0.35) 33%,
+      rgba(255, 255, 255, 0.35) 35%,
+      rgba(0, 0, 0, 0) 100%),
+
+    linear-gradient(0deg, rgba(20, 20, 20, 1) 0%,
+      rgba(20, 20, 20, 1) 100%);
+
+}
+
+.laptop .keyboard.top::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 12%;
+  height: 30%;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+
+.laptop .keyboard.bottom {
+  height: 11px;
+  border-radius: 0 0 33% 33%;
+  background: linear-gradient(90deg,
+      rgba(255, 255, 255, 0.35) 0%, rgba(0, 0, 0, 0.75) 2%,
+      rgba(0, 0, 0, 0.5) 7%, rgba(0, 0, 0, 0) 50%),
+
+    linear-gradient(90deg, rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, 0.5) 83%, rgba(0, 0, 0, 0.75) 98%,
+      rgba(255, 255, 255, 0.35) 100%),
+
+    linear-gradient(0deg, rgba(0, 0, 0, 0.75) 0%,
+      rgba(0, 0, 0, 0.25) 33%, rgba(255, 255, 255, 1) 34%,
+      rgba(255, 255, 255, 1) 100%),
+
+    linear-gradient(0deg, rgba(200, 200, 200, 1) 0%,
+      rgba(200, 200, 200, 1) 100%);
+}
+
+.laptop .keyboard.bottom::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 12%;
+  height: 40%;
+  background: linear-gradient(0deg,
+      rgba(255, 255, 255, 0.75) 0%, rgba(0, 0, 0, 0.5) 100%);
+  border-radius: 0 0 0.5vw 0.5vw;
+}
+
+.statistic-section {
   position: relative;
 }
 
-.banner-videobox video {
+.statistic-image {
   width: 100%;
-  aspect-ratio: 20/9;
-  object-fit: cover;
-  border-radius: 10rem;
-  box-shadow: 0 0 10px rgba(60, 100, 245, 0.15);
+  max-width: 165px;
+}
+
+.statistic-section .btn.btn-default {
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 2;
+  padding: 0;
+  width: 100%;
+  text-align: center;
+  border-radius: 50rem;
+}
+
+@media (max-width: 975px) {
+  .statistic-section .btn.btn-default {
+    font-size: 22px;
+    line-height: 1.7;
+  }
+}
+
+.statistic-section h1 {
+  font-size: 38px;
+  line-height: 50px;
+}
+
+.statistic-section h5 {
+  font-size: 15px;
+  line-height: 1;
+}
+
+.statistic-section p {
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.boy-image {
+  position: absolute;
+  left: -60px;
+  bottom: -37px;
+  z-index: 0;
 }
 
 .banner-about .banner-inner .banner-imgs {
@@ -8143,8 +8336,7 @@ ul li:last-child .card-list-4 {
 }
 
 .banner-homepage5 .banner-inner .row .block-banner {
-  padding-right: 50px;
-  padding-top: 90px;
+  padding-left: 103px;
 }
 
 .banner-homepage5 .banner-imgs {
@@ -8746,6 +8938,10 @@ ul li:last-child .card-list-4 {
 
   .banner-hero.banner-homepage5 {
     background-color: #ffffff;
+  }
+
+  .banner-homepage5 .banner-inner .row .block-banner {
+    padding-left: 0;
   }
 }
 
