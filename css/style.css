@@ -8004,6 +8004,11 @@ ul li:last-child .card-list-4 {
   right: 0;
 }
 
+.box-nav-tabs .btn-border.active {
+  background-color: green;
+  color: #fff;
+}
+
 .nav-tabs {
   border: 0px;
   display: inline-block;
