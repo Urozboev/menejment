@@ -5954,8 +5954,8 @@ ul li:last-child .card-list-4 {
 .laptop .screen .lcd {
   position: absolute;
   top: 1.5%;
-  left: 0%;
-  right: 0%;
+  left: 1%;
+  right: 1%;
   bottom: 3.5%;
   /* border: 1px solid;
   border-color: #000 #202020 #282828 #000; */
@@ -5967,6 +5967,7 @@ ul li:last-child .card-list-4 {
   width: 100%;
   height: 100%;
   aspect-ratio: 16/9;
+  object-fit: cover;
 }
 
 .laptop .screen .glass_frame {
@@ -6100,9 +6101,10 @@ ul li:last-child .card-list-4 {
 
 .boy-image {
   position: absolute;
-  left: -30px;
-  bottom: -37px;
+  left: -50px;
+  bottom: -2px;
   z-index: 0;
+  transform: scale(1.1);
 }
 
 .banner-about .banner-inner .banner-imgs {
