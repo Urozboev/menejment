@@ -1500,11 +1500,6 @@ label {
   margin-top: 6px !important;
 }
 
-.modal-lg,
-.modal-xl {
-  max-width: 600px;
-}
-
 .modal-content .btn-close {
   position: absolute;
   top: 15px;

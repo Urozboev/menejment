@@ -15,7 +15,296 @@
   <link rel="shortcut icon" type="image/x-icon" href="images/logo.png">
   <link href="css/style.css" rel="stylesheet">
   <title>menejment.uz - Menejerlik kurslariga tayyorgarlik </title>
+
 </head>
+
+<style>
+  .video-btn {
+    width: 100%;
+    max-width: 250px;
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    gap: 14px;
+    padding: 5px;
+    border: none;
+    border-radius: 60px;
+    background: linear-gradient(135deg, #fff, #2563eb);
+    color: #fff;
+    font-size: 18px;
+    font-weight: 600;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 1s ease;
+    margin-bottom: 15px;
+    background-size: 200% 100%;
+
+    /* Animatsiya */
+    animation: bgMove 6s ease-in-out infinite alternate,
+      textColorSwap 6s ease-in-out infinite alternate;
+  }
+
+  /* Fon chapdan o‘ngga yuradi */
+  @keyframes bgMove {
+    0% {
+      background-position: 0% 50%;
+    }
+
+    100% {
+      background-position: 100% 50%;
+    }
+  }
+
+  /* Matn rangi fon bilan teskari almashadi */
+  @keyframes textColorSwap {
+    0% {
+      color: #2563eb;
+    }
+
+    100% {
+      color: #ffffff;
+    }
+  }
+
+  /* Hoverda biroz ko‘tariladi */
+  .video-btn:hover {
+    transform: translateY(-3px);
+  }
+
+  /* 🔵 Play icon dumaloq fon */
+  .play-icon {
+    width: 50px;
+    height: 50px;
+    background: #ffffff;
+    color: #2563eb;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    position: relative;
+    z-index: 2;
+
+    animation: iconSwap 6s ease-in-out infinite alternate;
+  }
+
+  .btn-text {
+    position: relative;
+    z-index: 2;
+  }
+
+  /* Icon fon va belgisi ham almashadi */
+  @keyframes iconSwap {
+    0% {
+      background: #2563eb;
+      color: #ffffff;
+    }
+
+    100% {
+      background: #ffffff;
+      color: #2563eb;
+    }
+  }
+
+  .modal-video {
+    width: 91%;
+    aspect-ratio: 16/9;
+    border-radius: 10px;
+  }
+
+  /* ===== ROOT ===== */
+  :root {
+    --book-width: 200px;
+    --book-height: 280px;
+  }
+
+  /* ===== BOOK CARDS ===== */
+  .book-card {
+    cursor: pointer;
+    transition: transform 0.3s ease;
+  }
+
+  .book-card:hover {
+    transform: translateY(-10px);
+  }
+
+  .book-cover {
+    position: relative;
+    width: 100%;
+    height: var(--book-height);
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+  }
+
+  .book-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  .book-card:hover .book-cover img {
+    transform: scale(1.05);
+  }
+
+  .read-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    color: #fff;
+    font-size: 1.4rem;
+  }
+
+  .read-overlay i {
+    font-size: 2.8rem;
+    margin-bottom: 8px;
+  }
+
+  .book-card:hover .read-overlay {
+    opacity: 1;
+  }
+
+  .book-info {
+    text-align: center;
+  }
+
+  .book-info h5 {
+    font-size: 0.82rem;
+    font-weight: 600;
+    line-height: 1.25;
+    margin-bottom: 3px !important;
+    /* 2 qator limit + ellipsis */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .book-info p {
+    font-size: 0.75rem;
+    line-height: 1.15;
+  }
+
+  /* ===== SECTION ===== */
+  .section-box {
+    padding: 50px 0;
+  }
+
+  .section-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #2c3e50;
+  }
+
+  /* ===== FULLSCREEN MODAL (footer olib tashlash + centering fix) ===== */
+  .fullscreen-modal .modal-content {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    /* footer yo'q bo'lganda modal-body barcha bo'sh joyni oladi */
+  }
+
+  .fullscreen-modal .modal-header {
+    background: #fff;
+    border-bottom: 1px solid #dee2e6;
+    padding: 12px 20px;
+    flex-shrink: 0;
+    /* header o'z o'lchamini saqlaydi */
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .fullscreen-modal .modal-header .modal-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 280px;
+  }
+
+  .modal-header .controls {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex: 1;
+    justify-content: center;
+  }
+
+  /* ===== MODAL BODY — flipbook markazlash ===== */
+  .fullscreen-modal .modal-body {
+    flex: 1;
+    /* barcha bo'sh joyni oladi */
+    overflow: hidden;
+    /* scroll yoqilmaydi — turn.js o'z scroll bera edi */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #e8e8e8;
+    padding: 20px;
+    min-height: 0;
+    /* IMPORTANT: flex child min-height bug fix */
+  }
+
+  /* ===== FLIPBOOK ===== */
+  #flipbook {
+    /* o'lcham JS-dan dinamik beriladi, bu yerda fon va shadow */
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  }
+
+  #flipbook .page {
+    background: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  #flipbook .page img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+
+  .loading {
+    color: #888;
+    font-size: 0.95rem;
+    text-align: center;
+  }
+
+  .error {
+    color: #dc3545;
+    font-size: 0.9rem;
+    text-align: center;
+  }
+
+  .error-message {
+    color: #dc3545;
+    font-size: 1.1rem;
+    text-align: center;
+    padding: 40px;
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 768px) {
+    .modal-header .controls {
+      justify-content: flex-start;
+    }
+
+    .fullscreen-modal .modal-body {
+      padding: 8px;
+    }
+  }
+</style>
 
 <body>
   <div id="preloader-active">
@@ -35,8 +324,6 @@
         <div class="header-nav">
           <nav class="nav-main-menu">
             <ul class="main-menu">
-              <li class=""><a href="https://menejment.uz/about">Biz haqqimizda</a>
-              </li>
               <li class=""><a href="test_simple.html">Test namunalari</a>
               </li>
               <li class="has-children "><a href="#">Maktab uchun</a>
@@ -96,17 +383,8 @@
                   <li><a class="" href="https://menejment.uz/page/5">2-Keys</a></li>
                 </ul>
               </li>
-
-              <li class="has-children "><a href="#">Resurslar</a>
-                <ul class="sub-menu">
-                  <li class=""><a href="https://menejment.uz/page/6">E-kutibxona</a></li>
-                  <li class=""><a href="https://menejment.uz/page/7">Amaliy topshiriq namunalari</a></li>
-
-                </ul>
+              <li class=""><a href="#">Maktab maslahatchisi</a>
               </li>
-
-
-
             </ul>
           </nav>
           <div class="burger-icon burger-icon-white"><span class="burger-icon-top"></span><span
@@ -132,9 +410,6 @@
             <!-- mobile menu start-->
             <nav>
               <ul class="mobile-menu font-heading">
-                <li class=""><a class="" href="https://menejment.uz#news">Yangiliklar</a></li>
-                <li class=""><a href="https://menejment.uz/about">Biz haqqimizda</a>
-                </li>
                 <li class=""><a href="test_simple.html">Test namunalari</a>
                 </li>
                 <li class="has-children "><a href="#">Maktab rahbarlari</a>
@@ -194,16 +469,8 @@
                     <li><a class="" href="https://menejment.uz/page/5">2-Keys</a></li>
                   </ul>
                 </li>
-                <li class="has-children "><a href="#">Resurslar</a>
-                  <ul class="sub-menu">
-                    <li class=""><a href="https://menejment.uz/page/6">E-kutibxona</a></li>
-                    <li class=""><a href="https://menejment.uz/page/7">Amaliy topshiriq namunalari</a></li>
-
-                  </ul>
+                <li class=""><a href="#">Maktab maslahatchisi</a>
                 </li>
-
-
-
               </ul>
               <div class="mobile-account">
                 <a class="btn btn-default btn-shadow  hover-up" href="https://menejment.uz/registration">Ro'yxatdan
@@ -217,7 +484,20 @@
       </div>
     </div>
   </div>
-
+  <!-- Modal -->
+  <div class="modal fade" id="videoModal" tabindex="-1" aria-labelledby="videoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="videoModalLabel">Foydalanish yo'riqnomasi</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body text-center">
+          <video class="modal-video" id="laptop-video" src="video.mp4" loop controls></video>
+        </div>
+      </div>
+    </div>
+  </div>
   <main class="main">
     <section class="section-box mb-15">
       <div class="banner-hero hero-1 banner-homepage5">
@@ -225,6 +505,12 @@
           <div class="row align-items-center">
             <div class="col-xl-7 col-xxl-6 col-lg-12">
               <div class="block-banner">
+                <button type="button" class="video-btn" data-bs-toggle="modal" data-bs-target="#videoModal">
+                  <span class="play-icon">
+                    <i class="fi-rr-play"></i>
+                  </span>
+                  <span class="btn-text">Platforma haqida</span>
+                </button>
                 <h6 class="heading-banner wow animate__animated animate__fadeInUp">“Yo‘lni biladigan, to‘g‘ri yo‘ldan
                   boradigan va yo‘l ko‘rsatuvchi rahbardir”.</h6>
               </div>
@@ -246,7 +532,7 @@
         </div>
       </div>
     </section>
-    <section class="section-box overflow-visible mt-20 statistic-section" style="z-index: 5;">
+    <section class="section-box overflow-visible mt-20 statistic-section">
       <div class="container position-relative" style="z-index: 5;">
         <div class="row">
           <div class="col-12 col-xl-10 offset-xl-2">
@@ -300,14 +586,15 @@
     <section class="section-box overflow-visible mt-20 statistic-section">
       <div class="container position-relative">
         <img class="boy-image d-none d-xl-block" src="images/boy.png" alt="">
-        <div class="row position-relative style="z-index: 5;">
+        <div class="row position-relative" style="z-index: 5;">
           <div class="col-12 col-xl-10 offset-xl-2">
             <div class="row">
               <div class="col-12 col-lg-2 text-center text-lg-start d-flex align-items-center justify-content-center">
                 <img class="statistic-image" src="./images/mtm.png" alt="">
               </div>
               <div class="col-12 col-lg-2 my-3 my-lg-0 text-center d-flex align-items-center">
-                <a href="https://menejment.uz/moduls/2" class="btn btn-default btn-big" style="background-color: #06723e;">
+                <a href="https://menejment.uz/moduls/2" class="btn btn-default btn-big"
+                  style="background-color: #06723e;">
                   MTM
                 </a>
               </div>
@@ -348,173 +635,302 @@
       </div>
     </section>
 
-    <section class="section-box bg-15 pt-50 pb-50 mt-30 position-relative" style="z-index: 5;">
+    <section class="section-box bg-15 pt-50 pb-50 mt-30 position-relative">
+      <h2 class="section-title mb-30 wow animate__animated animate__fadeInUp text-center">Eng kerakli adabiyotlar
+        (bepul)</h2>
+      </div>
       <div class="container">
         <div class="row">
-          <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 text-center mb-30">
-            <iframe width="853" height="480" src="https://www.youtube.com/embed/LqRKABHoCkc?autoplay=1" allow=""
-              title="menejment.uz" frameborder="0" allowfullscreen=""></iframe>
+          <!-- Kitob 1 -->
+          <div class="col-12 col-md-6 col-lg-4 col-xl-2 mb-4">
+            <div class="book-card" data-pdf="qollanma.pdf">
+              <div class="book-cover">
+                <img src="images/qollanma.jpg" alt="Zamonaviy ta'limda innovatsion boshqaruv" class="img-fluid">
+                <div class="read-overlay">
+                  <i class="fi-rr-book-alt"></i>
+                  <span>O'qish</span>
+                </div>
+              </div>
+              <div class="book-info mt-2">
+                <h5>Zamonaviy ta'limda innovatsion boshqaruv</h5>
+                <p class="text-muted">Mualliflar: Xolmuratov Sh.B., Xolmurodov A.Sh., Qodirov B.N.</p>
+              </div>
+            </div>
           </div>
-          <div class="col-xl-5 col-lg-6 col-md-12 col-sm-12">
-            <h4 class="mb-40">Pedagogika yo‘nalishidagi rahbar kadrlar diqqatiga</h4>
-            <div class="box-checkbox mb-30">
-              <h6>Katta qadam vazifasi</h6>
-              <p class="font-md color-text-paragraph-2"> Sirdaryolik malakali va tajribali ustozlarimiz tomonidan <a
-                  href="https://menejment.uz/">Menejment.uz</a> platformasi yaratilgan bo‘lib ta’lim yo‘nalishidagi
-                barcha o‘qituvchilar o‘zlarini amaldagi rahbarlik sertifikatsiyasidan muvafaqiyatli o‘tishlari uchun
-                katta qadam vazifasini bajaradi.</p>
+          <!-- Kitob 1 -->
+          <div class="col-12 col-md-6 col-lg-4 col-xl-2 mb-4">
+            <div class="book-card" data-pdf="menejment.pdf">
+              <div class="book-cover">
+                <img src="images/menejment.jpg"
+                  alt="Umumiy o‘rta ta'lim muassasalarida samarali boshqarishni tashkil etish yo‘llari"
+                  class="img-fluid">
+                <div class="read-overlay">
+                  <i class="fi-rr-book-alt"></i>
+                  <span>O'qish</span>
+                </div>
+              </div>
+              <div class="book-info mt-2">
+                <h5>Umumiy o‘rta ta'lim muassasalarida samarali boshqarishni tashkil etish yo‘llari</h5>
+                <p class="text-muted">Mualliflar: Xolmuratov Sh.B., Xolmurodov A.Sh., Nuraliyeva N.B.</p>
+              </div>
             </div>
-            <h6>Telegram kanalga a'zo bo'ling va boshqalarga ham ulashing.</h6>
-            <div class="box-checkbox mb-30">
-              <p class="font-md color-text-paragraph-2">
-                Web site: <a href="https://Menejment.uz/">https://Menejment.uz/</a>
-              </p>
-            </div>
-            <div class="box-checkbox mb-30">
-              <p class="font-md color-text-paragraph-2">
-                Call-center: <a href="tel:+998974911000">+998974911000</a>
-              </p>
-            </div>
-            <div class="box-checkbox mb-30">
-              <p class="font-md color-text-paragraph-2">
-                Admin: <a href="https://t.me/Menejment_uz_admin">https://t.me/Menejment_uz_admin</a> <br>
-
-              </p>
-            </div>
-            <div class="box-checkbox mb-30">
-              <p class="font-md color-text-paragraph-2">
-                Telegram kanal: <a href=" https://t.me/Menejment_uz_rasmiy">https://t.me/Menejment_uz_rasmiy</a>
-              </p>
-            </div>
-
           </div>
         </div>
       </div>
     </section>
 
+    <!-- Modal -->
+    <div class="modal fade fullscreen-modal" id="bookModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-fullscreen">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalTitle">Kitob Nomi</h5>
+            <div class="controls">
+              <button class="btn btn-sm btn-outline-secondary" id="prevPage">
+                <i class="fas fa-chevron-left"></i> Oldingi
+              </button>
+              <span class="mx-2" id="pageInfo">1 / 10</span>
+              <button class="btn btn-sm btn-outline-secondary" id="nextPage">
+                Keyingi <i class="fas fa-chevron-right"></i>
+              </button>
+              <button class="btn btn-sm btn-outline-secondary ms-3" id="zoomIn">
+                <i class="fi-rr-zoom-in"></i>
+              </button>
+              <button class="btn btn-sm btn-outline-secondary" id="zoomOut">
+                <i class="fi-rr-zoom-out"></i>
+              </button>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div id="flipbook" class="mx-auto">
+              <!-- PDF sahifalari shu yerga yuklanadi -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <div class="container">
-      <div class="row mt-50">
-        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
+      <h2 class="section-title mt-50 mb-30 wow animate__animated animate__fadeInUp text-center">
+        Amaliy ish namunalari
+      </h2>
+      <div class="row">
+        <div class="col-12 col-md-6 col-lg-4">
           <div class="card-image-top hover-up">
             <div class="image" style="">
-              <iframe height="100%" src="https://www.youtube.com/embed/BFsYnmhdOGk" title="menejment.uz" frameborder="0"
-                allowfullscreen=""></iframe>
+              <iframe style="aspect-ratio: 16/9;" height="100%" src="https://www.youtube.com/embed/BFsYnmhdOGk"
+                title="menejment.uz" frameborder="0" allowfullscreen=""></iframe>
             </div>
             <div class="informations">
               <a href="https://www.youtube.com/embed/BFsYnmhdOGk">
-                <h5 class="text-center">menejment.uz platformasidan samarali foydalanish yo'riqnomasi</h5>
+                <h5 class="text-center">Amaliy ish namunasi</h5>
               </a>
-
             </div>
           </div>
         </div>
-        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
+        <div class="col-12 col-md-6 col-lg-4">
           <div class="card-image-top hover-up">
             <div class="image" style="">
-              <iframe height="100%" src="https://www.youtube.com/embed/jy4ZNbNwoy4" title="menejment.uz" frameborder="0"
-                allowfullscreen=""></iframe>
+              <iframe style="aspect-ratio: 16/9;" height="100%" src="https://www.youtube.com/embed/BFsYnmhdOGk"
+                title="menejment.uz" frameborder="0" allowfullscreen=""></iframe>
             </div>
             <div class="informations">
-              <a href="https://www.youtube.com/embed/jy4ZNbNwoy4">
-                <h5 class="text-center">Bizning yutuqlarimiz</h5>
+              <a href="https://www.youtube.com/embed/BFsYnmhdOGk">
+                <h5 class="text-center">Amaliy ish namunasi</h5>
               </a>
-
             </div>
           </div>
         </div>
-        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
+        <div class="col-12 col-md-6 col-lg-4">
           <div class="card-image-top hover-up">
             <div class="image" style="">
-              <iframe height="100%" src="https://www.youtube.com/embed/5jdhwEckdRI" title="menejment.uz" frameborder="0"
-                allowfullscreen=""></iframe>
+              <iframe style="aspect-ratio: 16/9;" height="100%" src="https://www.youtube.com/embed/BFsYnmhdOGk"
+                title="menejment.uz" frameborder="0" allowfullscreen=""></iframe>
             </div>
             <div class="informations">
-              <a href="https://www.youtube.com/embed/5jdhwEckdRI">
-                <h5 class="text-center">LIDERLAR UCHUN KAFOLAT KALITIDIR.</h5>
+              <a href="https://www.youtube.com/embed/BFsYnmhdOGk">
+                <h5 class="text-center">Amaliy ish namunasi</h5>
               </a>
-
             </div>
           </div>
         </div>
-        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
+        <div class="col-12 col-md-6 col-lg-4">
           <div class="card-image-top hover-up">
             <div class="image" style="">
-              <iframe height="100%" src="https://www.youtube.com/embed/jy4ZNbNwoy4" title="menejment.uz" frameborder="0"
-                allowfullscreen=""></iframe>
+              <iframe style="aspect-ratio: 16/9;" height="100%" src="https://www.youtube.com/embed/BFsYnmhdOGk"
+                title="menejment.uz" frameborder="0" allowfullscreen=""></iframe>
             </div>
             <div class="informations">
-              <a href="https://www.youtube.com/embed/jy4ZNbNwoy4">
-                <h5 class="text-center">Bizning yutuqlarimiz</h5>
+              <a href="https://www.youtube.com/embed/BFsYnmhdOGk">
+                <h5 class="text-center">Amaliy ish namunasi</h5>
               </a>
-
             </div>
           </div>
         </div>
-
-      </div>
-      <div class="row">
-        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
+        <div class="col-12 col-md-6 col-lg-4">
           <div class="card-image-top hover-up">
             <div class="image" style="">
-              <iframe height="100%" src="https://www.youtube.com/embed/jSGKSYgWEEg" title="menejment.uz" frameborder="0"
-                allowfullscreen=""></iframe>
+              <iframe style="aspect-ratio: 16/9;" height="100%" src="https://www.youtube.com/embed/BFsYnmhdOGk"
+                title="menejment.uz" frameborder="0" allowfullscreen=""></iframe>
             </div>
             <div class="informations">
-              <a href="https://www.youtube.com/embed/jSGKSYgWEEg">
-                <h5 class="text-center">Bizning yutuqlarimiz</h5>
+              <a href="https://www.youtube.com/embed/BFsYnmhdOGk">
+                <h5 class="text-center">Amaliy ish namunasi</h5>
               </a>
-
             </div>
           </div>
         </div>
-        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
+        <div class="col-12 col-md-6 col-lg-4">
           <div class="card-image-top hover-up">
             <div class="image" style="">
-              <iframe height="100%" src="https://www.youtube.com/embed/ci7Q6YelX5U" title="menejment.uz" frameborder="0"
-                allowfullscreen=""></iframe>
+              <iframe style="aspect-ratio: 16/9;" height="100%" src="https://www.youtube.com/embed/BFsYnmhdOGk"
+                title="menejment.uz" frameborder="0" allowfullscreen=""></iframe>
             </div>
             <div class="informations">
-              <a href="https://www.youtube.com/embed/ci7Q6YelX5U">
-                <h5 class="text-center">Bizning yutuqlarimiz</h5>
+              <a href="https://www.youtube.com/embed/BFsYnmhdOGk">
+                <h5 class="text-center">Amaliy ish namunasi</h5>
               </a>
-
-            </div>
-          </div>
-        </div>
-        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
-          <div class="card-image-top hover-up">
-            <div class="image" style="">
-              <iframe height="100%" src="https://www.youtube.com/embed/9MfvDWEkJZc" title="menejment.uz" frameborder="0"
-                allowfullscreen=""></iframe>
-            </div>
-            <div class="informations">
-              <a href="https://www.youtube.com/embed/9MfvDWEkJZc">
-                <h5 class="text-center">Bizning yutuqlarimiz</h5>
-              </a>
-
-            </div>
-          </div>
-        </div>
-        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
-          <div class="card-image-top hover-up">
-            <div class="image" style="">
-              <iframe height="100%" src="https://www.youtube.com/embed/IA0i1vsJAWc" title="menejment.uz" frameborder="0"
-                allowfullscreen=""></iframe>
-            </div>
-            <div class="informations">
-              <a href="https://www.youtube.com/embed/IA0i1vsJAWc">
-                <h5 class="text-center">Bizning yutuqlarimiz</h5>
-              </a>
-
             </div>
           </div>
         </div>
       </div>
-      <div class="row">
 
-      </div>
+      <p class="fs-5 text-center">
+        <a class="text-primary" href="#">
+          Barchasini ko'rish
+          <i class="fi-rr-angle-double-right fs-6 ms-2"></i>
+        </a>
+      </p>
     </div>
+
+    <section class="bg-15 pt-50 pb-50 mt-30 position-relative">
+      <div class="container">
+        <div class="text-center">
+          <h2 class="section-title mt-50 wow animate__animated animate__fadeInUp">Bizning yutuqlarimiz</h2>
+        </div>
+        <div class="row mt-30">
+          <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
+            <div class="card-image-top hover-up">
+              <div class="image" style="">
+                <iframe height="100%" src="https://www.youtube.com/embed/BFsYnmhdOGk" title="menejment.uz"
+                  frameborder="0" allowfullscreen=""></iframe>
+              </div>
+              <div class="informations">
+                <a href="https://www.youtube.com/embed/BFsYnmhdOGk">
+                  <h5 class="text-center">menejment.uz platformasidan samarali foydalanish yo'riqnomasi</h5>
+                </a>
+
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
+            <div class="card-image-top hover-up">
+              <div class="image" style="">
+                <iframe height="100%" src="https://www.youtube.com/embed/jy4ZNbNwoy4" title="menejment.uz"
+                  frameborder="0" allowfullscreen=""></iframe>
+              </div>
+              <div class="informations">
+                <a href="https://www.youtube.com/embed/jy4ZNbNwoy4">
+                  <h5 class="text-center">Bizning yutuqlarimiz</h5>
+                </a>
+
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
+            <div class="card-image-top hover-up">
+              <div class="image" style="">
+                <iframe height="100%" src="https://www.youtube.com/embed/5jdhwEckdRI" title="menejment.uz"
+                  frameborder="0" allowfullscreen=""></iframe>
+              </div>
+              <div class="informations">
+                <a href="https://www.youtube.com/embed/5jdhwEckdRI">
+                  <h5 class="text-center">LIDERLAR UCHUN KAFOLAT KALITIDIR.</h5>
+                </a>
+
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
+            <div class="card-image-top hover-up">
+              <div class="image" style="">
+                <iframe height="100%" src="https://www.youtube.com/embed/jy4ZNbNwoy4" title="menejment.uz"
+                  frameborder="0" allowfullscreen=""></iframe>
+              </div>
+              <div class="informations">
+                <a href="https://www.youtube.com/embed/jy4ZNbNwoy4">
+                  <h5 class="text-center">Bizning yutuqlarimiz</h5>
+                </a>
+
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="row">
+          <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
+            <div class="card-image-top hover-up">
+              <div class="image" style="">
+                <iframe height="100%" src="https://www.youtube.com/embed/jSGKSYgWEEg" title="menejment.uz"
+                  frameborder="0" allowfullscreen=""></iframe>
+              </div>
+              <div class="informations">
+                <a href="https://www.youtube.com/embed/jSGKSYgWEEg">
+                  <h5 class="text-center">Bizning yutuqlarimiz</h5>
+                </a>
+
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
+            <div class="card-image-top hover-up">
+              <div class="image" style="">
+                <iframe height="100%" src="https://www.youtube.com/embed/ci7Q6YelX5U" title="menejment.uz"
+                  frameborder="0" allowfullscreen=""></iframe>
+              </div>
+              <div class="informations">
+                <a href="https://www.youtube.com/embed/ci7Q6YelX5U">
+                  <h5 class="text-center">Bizning yutuqlarimiz</h5>
+                </a>
+
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
+            <div class="card-image-top hover-up">
+              <div class="image" style="">
+                <iframe height="100%" src="https://www.youtube.com/embed/9MfvDWEkJZc" title="menejment.uz"
+                  frameborder="0" allowfullscreen=""></iframe>
+              </div>
+              <div class="informations">
+                <a href="https://www.youtube.com/embed/9MfvDWEkJZc">
+                  <h5 class="text-center">Bizning yutuqlarimiz</h5>
+                </a>
+
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
+            <div class="card-image-top hover-up">
+              <div class="image" style="">
+                <iframe height="100%" src="https://www.youtube.com/embed/IA0i1vsJAWc" title="menejment.uz"
+                  frameborder="0" allowfullscreen=""></iframe>
+              </div>
+              <div class="informations">
+                <a href="https://www.youtube.com/embed/IA0i1vsJAWc">
+                  <h5 class="text-center">Bizning yutuqlarimiz</h5>
+                </a>
+
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+
+        </div>
+      </div>
+    </section>
 
 
 
@@ -522,7 +938,6 @@
       <div class="container">
         <div class="text-start">
           <h2 class="section-title mb-10 wow animate__animated animate__fadeInUp">Tizim qanday ishlaydi</h2>
-
         </div>
         <div class="mt-70">
           <div class="row">
@@ -565,121 +980,178 @@
       </div>
     </section>
 
-    <section class="section-box mt-50 mb-50" id="news">
+    <section class="section-box">
       <div class="container">
-        <div class="text-start">
-          <h2 class="section-title mb-10 wow animate__animated animate__fadeInUp">Yangliklar va bloglar</h2>
-          <p class="font-lg color-text-paragraph-2 wow animate__animated animate__fadeInUp">Bizni kuzatib boring</p>
+        <div class="text-center">
+          <h2 class="section-title mb-10 wow animate__animated animate__fadeInUp">Bizning jamoa</h2>
         </div>
-      </div>
-      <div class="container">
-        <div class="mt-50">
-          <div class="box-swiper style-nav-top">
-            <div class="swiper-container swiper-group-3 swiper">
-              <div class="swiper-wrapper pb-70 pt-5">
-                <div class="swiper-slide">
-                  <div class="card-grid-3 hover-up wow animate__animated animate__fadeIn">
+        <div class="mt-70">
+          <div class="row">
+            <div class="col-xl-4 col-lg-4 col-md-6">
+              <div class="card-grid-2 hover-up">
+                <div class="card-grid-2-image-left">
+                  <div class="card-grid-2-image-rd online"><a href="#">
+                      <figure><img alt="jobBox" src="https://menejment.uz/assets/imgs/page/candidates/user1.png">
+                      </figure>
+                    </a></div>
+                  <div class="card-profile pt-10"><a href="#">
+                      <h5>Xolmuratov Shaxriddin Baxriddinovich</h5>
+                    </a><span class="font-xs color-text-mutted">Muallif</span>
 
-                    <div class="card-block-info">
-                      <div class="tags mb-15"><a class="btn btn-tag" href="blog-grid.html">Yangiliklar</a></div>
-                      <h5><a href="https://menejment.uz/page/1 ">Direktor va direktor lavozimiga nomzodlar diqqatiga!!!
-                        </a></h5>
-                      <figure><img alt="jobBox" src="images/1.png"></figure>
-                      <p class="MsoNormal"><span class="oypena"><span style="color: black;">Sirdaryolik malakali va
-                            tajribali mutaxassislar tomonidan Direktor va direktor lavozimiga nomzodlar uchun A.Avloniy
-                            nomidagi milliy-tadqiqot instituti qoshidagi Xalq ta’limi xodimlarining bilim darajalari va
-                            kasbiy mahoratini baholash markazi kurslariga </span><strong><span
-                              style="color: #ff3131;">tayyorgarlik ko‘rish va ijobiy natijalarga
-                              erishish</span></strong><span style="color: black;">lari uchun mo‘ljallangan online test
-                            platformasi ishga tushdi.</span></span></p>
-                      <div class="card-2-bottom mt-20">
-                        <div class="row">
-                          <div class="col-lg-6 col-6">
-                            <div class="d-flex">
-                              <div class="info-right-img"><span class="font-xs color-text-paragraph-2"> 24.07.2024
-                                </span></div>
-                            </div>
-                          </div>
+                  </div>
+                </div>
+                <div class="card-block-info">
+                  <p class="font-xs color-text-paragraph-2">"Sirdaryo online education" MCHJ direktori,
+                    <br>
+                    Menejment.uz loyihasi rahbari
+                  </p>
 
-                        </div>
-                      </div>
+                  <div class="employers-info align-items-center justify-content-center mt-15">
+                    <div class="row">
+
+                      <div class="col-12"><span class="d-flex align-items-center"><i class="fi-rr-phone-call"></i>
+                          &nbsp; <span class="font-sm color-brand-1"> &nbsp; +998-91-500-96-27</span></span></div>
                     </div>
                   </div>
                 </div>
-                <div class="swiper-slide">
-                  <div class="card-grid-3 hover-up wow animate__animated animate__fadeIn">
-
-                    <div class="card-block-info">
-                      <div class="tags mb-15"><a class="btn btn-tag" href="blog-grid.html">Yangiliklar</a></div>
-                      <h5><a href="https://menejment.uz/page/2 ">Sirdarolik malakali va tajribali ustozlarimiz tomonidan
-                          Sirdaryotalimi.uz va Menejment.uz plarformasi ishga tushirildi. </a></h5>
-                      <figure><img alt="jobBox" src="images/2.png"></figure>
-                      <p class="MsoNormal" style="text-align: center;" align="center"><span
-                          class="oypena"><strong>Sirdarolik malakali va tajribali ustozlarimiz tomonidan
-                            Sirdaryotalimi.uz va Menejment.uz plarformasi ishga tushirildi.</strong></span></p>
-                      <p class="MsoNormal" style="text-align: center;" align="center"><span class="oypena"><strong
-                            style="mso-bidi-font-weight: normal;"><span style="mso-no-proof: yes;">
-                            </span></strong></span></p>
-                      <p class="MsoNormal"><strong style="mso-bidi-font-weight: normal;"><span class="oypena">Bu
-                            platforma rahbar kadrlarimizning faqatgina malaka oshirish vaqtlarida yoki sertifikat
-                            olishlari uchun emas, balki yillar davomida ta’lim tizimidagi yangiliklar, yangilanayotgan
-                            farmon va qarorlardan boshqaruv tizimida foydalanishlari hamda doimiy bilim darajalarini
-                            oshirib borishlari va bunday bosqichlarga mustaqil tayyorgarlik ko‘rib borishlari uchun
-                            sirdaryolik rahbar va rahbarlikka nomzod kadrlar uchun mo‘ljallangan.</span></strong></p>
-                      <div class="card-2-bottom mt-20">
-                        <div class="row">
-                          <div class="col-lg-6 col-6">
-                            <div class="d-flex">
-                              <div class="info-right-img"><span class="font-xs color-text-paragraph-2"> 26.07.2024
-                                </span></div>
-                            </div>
-                          </div>
-
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="swiper-slide">
-                  <div class="card-grid-3 hover-up wow animate__animated animate__fadeIn">
-
-                    <div class="card-block-info">
-                      <div class="tags mb-15"><a class="btn btn-tag" href="blog-grid.html">Yangiliklar</a></div>
-                      <h5><a href="https://menejment.uz/page/3 ">Sirdaryolik malakali va tajribali ustozlarimiz
-                          tomonidan </a></h5>
-                      <figure><img alt="jobBox" src="images/3.png"></figure>
-                      <p class="MsoNormal"><span class="oypena"><span style="color: #042b6e;">Sirdaryolik malakali va
-                            tajribali ustozlarimiz tomonidan Sirdaryotalimi.uz va Menejment.uz platformalarini yaratish
-                            rejalashtirilgan bo’lib, bugungi kunda Menejment.uz plarformasi ishga
-                            tushirildi.</span></span></p>
-                      <p class="MsoNormal"><span class="oypena"><span style="color: #ff3131;">Bu platforma rahbar
-                            kadrlarimizning faqatgina malaka oshirish vaqtlarida yoki sertifikat olishlari uchun emas,
-                            balki yillar davomida ta’lim tizimidagi yangiliklar, yangilanayotgan farmon va qarorlardan
-                            boshqaruv tizimida foydalanishlari hamda doimiy bilim darajalarini oshirib borishlari va
-                            bunday bosqichlarga <strong>mustaqil tayyorgarlik ko‘rib borishlari uchun</strong> rahbar va
-                            rahbarlikka nomzod kadrlar uchun mo‘ljallangan.</span></span></p>
-                      <div class="card-2-bottom mt-20">
-                        <div class="row">
-                          <div class="col-lg-6 col-6">
-                            <div class="d-flex">
-                              <div class="info-right-img"><span class="font-xs color-text-paragraph-2"> 27.07.2024
-                                </span></div>
-                            </div>
-                          </div>
-
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-
               </div>
             </div>
-            <div class="swiper-button-next"></div>
-            <div class="swiper-button-prev"></div>
-          </div>
+            <div class="col-xl-4 col-lg-4 col-md-6">
+              <div class="card-grid-2 hover-up">
+                <div class="card-grid-2-image-left">
+                  <div class="card-grid-2-image-rd online"><a href="#">
+                      <figure><img alt="jobBox" src="https://menejment.uz/assets/imgs/page/candidates/user2.png">
+                      </figure>
+                    </a></div>
+                  <div class="card-profile pt-10"><a href="#">
+                      <h5>Xolmurodov A’zam Shaxriyorovich </h5>
+                    </a><span class="font-xs color-text-mutted">Loyiha a'zosi</span>
 
+                  </div>
+                </div>
+                <div class="card-block-info">
+                  <p class="font-xs color-text-paragraph-2">Maktabgacha ta’lim tashkilotlari direktor va
+                    mutaxassislarini qayta tayyorlash va ularning malakasini oshirish instituti Bo‘lim boshlig‘i.</p>
+
+                  <div class="employers-info align-items-center justify-content-center mt-15">
+                    <div class="row">
+
+                      <div class="col-12"><span class="d-flex align-items-center"><i class="fi-rr-phone-call"></i>
+                          &nbsp; <span class="font-sm color-brand-1"> &nbsp; +998 97 491 10 00</span></span></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-4 col-lg-4 col-md-6">
+              <div class="card-grid-2 hover-up">
+                <div class="card-grid-2-image-left">
+                  <div class="card-grid-2-image-rd online"><a href="#">
+                      <figure><img alt="jobBox" src="https://menejment.uz/assets/imgs/page/candidates/user5.png">
+                      </figure>
+                    </a></div>
+                  <div class="card-profile pt-10"><a href="#">
+                      <h5>Nuraliyeva Nargiza Bozorboyevna</h5>
+                    </a><span class="font-xs color-text-mutted">Loyiha a'zosi</span>
+
+                  </div>
+                </div>
+                <div class="card-block-info">
+                  <p class="font-xs color-text-paragraph-2">Guliston davlat universiteti “Masofaviy ta’lim kafedrasi”
+                    katta o’qituvchisi</p>
+
+                  <div class="employers-info align-items-center justify-content-center mt-15">
+                    <div class="row">
+
+                      <div class="col-12"><span class="d-flex align-items-center"><i class="fi-rr-phone-call"></i>
+                          &nbsp; <span class="font-sm color-brand-1"> &nbsp; +998 97 491 10 00</span></span></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-4 col-lg-4 col-md-6">
+              <div class="card-grid-2 hover-up">
+                <div class="card-grid-2-image-left">
+                  <div class="card-grid-2-image-rd online"><a href="#">
+                      <figure><img alt="jobBox" src="https://menejment.uz/assets/imgs/page/candidates/user3.png">
+                      </figure>
+                    </a></div>
+                  <div class="card-profile pt-10"><a href="#">
+                      <h5>Qodirov Begmurod Nurillayevich</h5>
+                    </a><span class="font-xs color-text-mutted">Loyiha a'zosi</span>
+
+                  </div>
+                </div>
+                <div class="card-block-info">
+                  <p class="font-xs color-text-paragraph-2">Jizzax viloyati pedagoglarni yangi metodikalarga o‘rgatish
+                    milliy markazi “Aniq va tabiiy fanlar metodikasi” kafedrasida katta o‘qituvchi</p>
+
+                  <div class="employers-info align-items-center justify-content-center mt-15">
+                    <div class="row">
+
+                      <div class="col-12"><span class="d-flex align-items-center"><i class="fi-rr-phone-call"></i>
+                          &nbsp; <span class="font-sm color-brand-1"> &nbsp; +998 97 491 10 00</span></span></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-4 col-lg-4 col-md-6">
+              <div class="card-grid-2 hover-up">
+                <div class="card-grid-2-image-left">
+                  <div class="card-grid-2-image-rd online"><a href="#">
+                      <figure><img alt="jobBox" src="https://menejment.uz/assets/imgs/page/candidates/user4.png">
+                      </figure>
+                    </a></div>
+                  <div class="card-profile pt-10"><a href="#">
+                      <h5>Kurbanov Abduraxmon Alishboyevich</h5>
+                    </a><span class="font-xs color-text-mutted">Dasturchi</span>
+
+                  </div>
+                </div>
+                <div class="card-block-info">
+                  <p class="font-xs color-text-paragraph-2">Mirzo Ulug‘bek nomidagi O‘zbekiston Milliy universitetining
+                    Jizzax filiali tayanch doktoranti, menejment.uz loyihasi hammuallifi. </p>
+
+                  <div class="employers-info align-items-center justify-content-center mt-15">
+                    <div class="row">
+
+                      <div class="col-12"><span class="d-flex align-items-center"><i class="fi-rr-phone-call"></i>
+                          &nbsp; <span class="font-sm color-brand-1"> &nbsp; +998 97 491 10 00</span></span></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-4 col-lg-4 col-md-6">
+              <div class="card-grid-2 hover-up">
+                <div class="card-grid-2-image-left">
+                  <div class="card-grid-2-image-rd online"><a href="#">
+                      <figure><img alt="jobBox"
+                          src="https://menejment.uz/assets/imgs/page/candidates/urozboev_mirjalol.png"></figure>
+                    </a></div>
+                  <div class="card-profile pt-10"><a href="#">
+                      <h5>Mirjalol Urozboyev</h5>
+                    </a><span class="font-xs color-text-mutted">Dasturchi</span>
+
+                  </div>
+                </div>
+                <div class="card-block-info">
+                  <p class="font-xs color-text-paragraph-2">Guliston Davlat Pedagogika instituti tayanch doktoranti <br>
+                    menejment.uz loyihasi dasturchisi </p>
+
+                  <div class="employers-info align-items-center justify-content-center mt-15">
+                    <div class="row">
+
+                      <div class="col-12"><span class="d-flex align-items-center"><i class="fi-rr-phone-call"></i>
+                          &nbsp; <span class="font-sm color-brand-1"> &nbsp; +998 97 491 10 00</span></span></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -726,10 +1198,19 @@
       </div>
     </div>
   </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+
   <script src="js/modernizr-3.6.0.min.js"></script>
-  <script src="js/jquery-3.6.0.min.js"></script>
+  <!-- <script src="js/jquery-3.6.0.min.js"></script> -->
   <script src="js/jquery-migrate-3.3.0.min.js"></script>
   <script src="js/bootstrap.bundle.min.js"></script>
+
+
+  <!-- PDF.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <!-- Turn.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/3/turn.min.js"></script>
   <script src="js/waypoints.js"></script>
   <script src="js/wow.js"></script>
   <script src="js/magnific-popup.js"></script>
@@ -819,6 +1300,223 @@
     function onload1() {
       document.getElementById("massage").click(); // Simulates button click
     }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      var myVideoModal = document.getElementById('videoModal');
+      var myLaptopVideo = document.getElementById('laptop-video');
+
+      if (myVideoModal && myLaptopVideo) {
+        myVideoModal.addEventListener('hidden.bs.modal', function () {
+          myLaptopVideo.pause();
+          myLaptopVideo.currentTime = 0; // boshiga qaytarish (ixtiyoriy)
+        });
+      }
+    });
+  </script>
+
+  <script>
+    class PDFBookReader {
+      constructor() {
+        this.pdfDoc = null;
+        this.totalPages = 0;
+        this.currentPage = 1;
+        this.scale = 1.0;
+        this.canvasCache = {};
+        this.bookElement = null;
+        this.initEvents();
+      }
+
+      /* ---------- PDF yuk ---------- */
+      async loadPDF(pdfUrl) {
+        try {
+          pdfjsLib.GlobalWorkerOptions.workerSrc =
+            'js/pdf.worker.min.js';
+
+          this.pdfDoc = await pdfjsLib.getDocument(pdfUrl).promise;
+          this.totalPages = this.pdfDoc.numPages;
+
+          this.createFlipbook();
+          await this.renderPages(1, 4);
+        } catch (err) {
+          this.showError('Kitob yuklanmadi. PDF URL to\'g\'ri ekanligini tekshiring.');
+          console.error(err);
+        }
+      }
+
+      /* ---------- Flipbook yaratish ---------- */
+      createFlipbook() {
+        const $fb = $('#flipbook');
+        $fb.empty();
+
+        // Agar oldingi turn.js instance bolgan — destroy qilish
+        if (this._turnActive) {
+          try { $fb.turn('destroy'); } catch (e) { }
+          this._turnActive = false;
+        }
+
+        // Sahifa divlar
+        for (let i = 1; i <= this.totalPages; i++) {
+          $fb.append(`
+        <div class="page">
+          <div class="page-content" data-page="${i}">
+            <div class="loading">Yuklanmoqda...</div>
+          </div>
+        </div>
+      `);
+        }
+
+        /* ===  O'LCHAM HISOB  ===
+           modal-body padding: 20px (top+bottom = 40px)
+           modal-header: ~56px
+           => usable height ≈ window.innerHeight - 30
+           width: min(1000, 90% vp width)
+           height: min(usable, 90% usable)               */
+        const usableH = window.innerHeight - 30;
+        const w = Math.min(1000, window.innerWidth * 0.9);
+        const h = Math.min(usableH * 0.9, 680);
+
+        $fb.turn({
+          width: w,
+          height: h,
+          elevation: 50,
+          gradients: true,
+          autoCenter: true,
+          when: {
+            turned: (e, page) => {
+              this.currentPage = page;
+              this.updatePageInfo();
+              this.renderAdjacentPages(page);
+            }
+          }
+        });
+
+        this._turnActive = true;
+        this.bookElement = $fb;
+        this.updatePageInfo();
+      }
+
+      /* ---------- Qo'shni sahifalar render ---------- */
+      async renderAdjacentPages(cur) {
+        const set = new Set([cur]);
+        if (cur > 1) set.add(cur - 1);
+        if (cur < this.totalPages) set.add(cur + 1);
+        if (cur + 2 <= this.totalPages) set.add(cur + 2);
+
+        for (const n of set) {
+          if (!this.canvasCache[n]) await this.renderPage(n);
+        }
+      }
+
+      /* ---------- Birinchi N sahifa render ---------- */
+      async renderPages(start, count = 4) {
+        const end = Math.min(start + count - 1, this.totalPages);
+        for (let i = start; i <= end; i++) await this.renderPage(i);
+      }
+
+      /* ---------- Yolqin sahifa render ---------- */
+      async renderPage(pageNum) {
+        if (this.canvasCache[pageNum]) return;
+
+        try {
+          const page = await this.pdfDoc.getPage(pageNum);
+          const viewport = page.getViewport({ scale: this.scale });
+
+          const canvas = document.createElement('canvas');
+          const ctx = canvas.getContext('2d');
+          canvas.width = viewport.width;
+          canvas.height = viewport.height;
+
+          await page.render({ canvasContext: ctx, viewport }).promise;
+
+          const imgData = canvas.toDataURL('image/png');
+          $(`.page-content[data-page="${pageNum}"]`).html(
+            `<img src="${imgData}" alt="Sahifa ${pageNum}">`
+          );
+          this.canvasCache[pageNum] = imgData;
+        } catch (err) {
+          console.error(`Sahifa ${pageNum} error:`, err);
+          $(`.page-content[data-page="${pageNum}"]`).html(
+            '<div class="error">Sahifa yuklanmadi</div>'
+          );
+        }
+      }
+
+      /* ---------- UI helpers ---------- */
+      updatePageInfo() {
+        $('#pageInfo').text(`${this.currentPage} / ${this.totalPages}`);
+      }
+
+      zoomIn() { this.scale += 0.2; this.refreshPages(); }
+      zoomOut() { if (this.scale > 0.4) { this.scale -= 0.2; this.refreshPages(); } }
+
+      async refreshPages() {
+        this.canvasCache = {};
+        await this.renderPages(1, Math.min(4, this.totalPages));
+        if (this.currentPage > 0) await this.renderAdjacentPages(this.currentPage);
+      }
+
+      showError(msg) {
+        $('#flipbook').html(`<div class="error-message">${msg}</div>`);
+      }
+
+      /* ---------- Events ---------- */
+      initEvents() {
+        $('#prevPage').on('click', () => {
+          if (this._turnActive) this.bookElement.turn('previous');
+        });
+        $('#nextPage').on('click', () => {
+          if (this._turnActive) this.bookElement.turn('next');
+        });
+        $('#zoomIn').on('click', () => this.zoomIn());
+        $('#zoomOut').on('click', () => this.zoomOut());
+
+        /* Modal yopilganda — hamma narsani reset */
+        $('#bookModal').on('hidden.bs.modal', () => {
+          if (this._turnActive) {
+            try { this.bookElement.turn('destroy'); } catch (e) { }
+            this._turnActive = false;
+          }
+          this.pdfDoc = null;
+          this.currentPage = 1;
+          this.scale = 1.0;
+          this.canvasCache = {};
+          $('#flipbook').empty();
+        });
+      }
+    }
+
+    /* ===== INIT ===== */
+    $(document).ready(function () {
+      const reader = new PDFBookReader();
+      const modal = new bootstrap.Modal(document.getElementById('bookModal'));
+
+      /* Kitob card click */
+      $('.book-card').on('click', function () {
+        const url = $(this).data('pdf');
+        const title = $(this).find('h5').first().text();
+
+        $('#modalTitle').text(title);
+        modal.show();
+
+        // Modal shown bo'lganda PDF yuk — modal fully rendered bo'lgan vaqtda
+        $('#bookModal').one('shown.bs.modal', () => {
+          reader.loadPDF(url);
+        });
+      });
+
+      /* Window resize — flipbook o'lchamini qayta set */
+      let resizeTimer;
+      $(window).on('resize', function () {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+          if (!reader._turnActive) return;
+          const usableH = window.innerHeight - 30;
+          const w = Math.min(1000, window.innerWidth * 0.9);
+          const h = Math.min(usableH * 0.9, 680);
+          reader.bookElement.turn('size', w, h);
+        }, 250);
+      });
+    });
   </script>
 
 
